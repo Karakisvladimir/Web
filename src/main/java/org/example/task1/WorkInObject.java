@@ -5,31 +5,50 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
 import java.io.IOException;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+
 
 public class WorkInObject {
-
     // метод для створення нового об'єкта
     public static void createUser() throws IOException {
         String baseUrl = "https://jsonplaceholder.typicode.com/users";
-        Document document = Jsoup.connect(baseUrl).data("name", "Vania").data("username", "vania")
-                .data("email", "john@gmail.com")
-                .post();
-
-        System.out.println("New user was created: " + document);
+        String requestBody = "{\"name\": \"Victory user\", \"username\": \"victory\",\"email\":\"victory@gmail.com\"}";
+        HttpRequest requestPost = HttpRequest.newBuilder()
+                .uri(URI.create(baseUrl))
+                .header("Content-type", "application/json; charset=UtF-8")
+                .POST(HttpRequest.BodyPublishers.ofString(requestBody))
+                .build();
+        try {
+            String body = HttpClient.newHttpClient().send(requestPost, HttpResponse.BodyHandlers.ofString()).body();
+            System.out.println("New user was created: " + body);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        //second variant -now work!!!
+//        Document document = Jsoup.connect(baseUrl).data("name", "Vania").data("username", "vania")
+//                .data("email", "john@gmail.com")
+//                .followRedirects(false)
+//                .ignoreContentType(true)
+//                .post();
+//
+//        System.out.println("New user was created: " + document);
     }
 
-    // метод для оновлення об'єкта
-    public static void updateUser() throws IOException {
-        String baseUrl = "https://jsonplaceholder.typicode.com/users";
-        Document doc = (Document) Jsoup.connect(baseUrl).method(Connection.Method.PUT)
-                .data("name", "John Doe")
-                .data("username", "johndoe")
-                .data("email", "johndoe@example.com")
-                .execute();
+    // відправка PUT запиту на API
+    public static void updateUser() {
+        try {
+            HttpClient httpClient = HttpClient.newHttpClient();
+            HttpRequest request = HttpRequest.newBuilder().uri(URI.create("https://jsonplaceholder.typicode.com/users")).header("Content-Type", "application/json").method("PUT", HttpRequest.BodyPublishers.ofString("{\"name\":\"John Doe\",\"username\":\"johndoe\",\"email\":\"johndoe@example.com\"}")).build();
+            HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
 
-        // якщо у відповіді на запит отримали такий самий JSON, що був відправлений
-        // - значить об'єкт був успішно оновлений
-        System.out.println("User was updated: " + doc);
+            System.out.println(response.statusCode());
+            System.out.println(response.body());
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     // метод для видалення об'єкта
@@ -44,18 +63,14 @@ public class WorkInObject {
     // метод для отримання інформації про всіх користувачів
     public static void getAllUsers() throws IOException {
         String baseUrl = "https://jsonplaceholder.typicode.com/users";
-
-
         Document doc = Jsoup.connect(baseUrl).ignoreContentType(true).get();
-
-        // отримуємо інформацію про всі користувачі
         System.out.println("All users info: " + doc);
     }
 
     // метод для отримання інформації про користувача за id
     public static void getUserById() throws IOException {
         String baseUrl1 = "https://jsonplaceholder.typicode.com";
-        String baseUrl = "https://jsonplaceholder.typicode.com/users/11";
+        String baseUrl = "https://jsonplaceholder.typicode.com/users/9";
         Document doc1 = Jsoup.connect(baseUrl).ignoreContentType(true).get();
         System.out.println("User info by ID: " + doc1);
     }
