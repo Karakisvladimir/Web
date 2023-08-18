@@ -70,7 +70,7 @@ public class WorkInObject {
         System.out.println("All users info: " + doc);
     }
     // метод для отримання інформації про користувача за id
-    public static String getUserById(String id) throws IOException {
+    public static String getUserById(int id) throws IOException {
         String baseUrl = "https://jsonplaceholder.typicode.com/users/" + id;
         Document doc1 = Jsoup.connect(baseUrl).ignoreContentType(true).get();
         System.out.println("doc1 = " + doc1);

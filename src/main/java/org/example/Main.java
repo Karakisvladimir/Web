@@ -14,7 +14,7 @@ public class Main {
             updateUser();
             deleteUser();
             getAllUsers();
-            getUserById("5");
+            getUserById(5);
             getUserByUsername();
             getCommentsForPost(10);
             printOpenTasksForUser(10);
