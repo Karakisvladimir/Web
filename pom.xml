@@ -37,8 +37,19 @@
             <artifactId>httpcore5</artifactId>
             <version>5.2</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/com.jsunsoft.http/http-request -->
+        <dependency>
+            <groupId>com.jsunsoft.http</groupId>
+            <artifactId>http-request</artifactId>
+            <version>3.2.1</version>
+        </dependency>
 
-
+        <!-- https://mvnrepository.com/artifact/org.webjars.npm/http-response-object -->
+        <dependency>
+            <groupId>org.webjars.npm</groupId>
+            <artifactId>http-response-object</artifactId>
+            <version>3.0.2</version>
+        </dependency>
     </dependencies>
 
 </project>

@@ -1,22 +1,32 @@
 package org.example.task1;
 
+
+
 import org.json.JSONArray;
 import org.json.JSONObject;
-
 import java.io.*;
-import java.net.HttpURLConnection;
-import java.net.URL;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 
 public class Comment {
     public static void getCommentsForPost(int id) {
         String url = "https://jsonplaceholder.typicode.com/posts/" + id + "/comments";
         try {
-            URL obj = new URL(url);
-            HttpURLConnection con = (HttpURLConnection) obj.openConnection();
-            con.setRequestMethod("GET");
-            con.setRequestProperty("User-Agent", "Mozilla/5.0");
-            BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream()));
-            String commentsJSON = br.readLine();
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(url))
+                    .header("Content-Type" , "application/json")
+                    .method("GET", HttpRequest.BodyPublishers.noBody())
+                    .build();
+            String commentsJSON = null;
+            try {
+                commentsJSON = HttpClient.newHttpClient()
+                        .send(request, HttpResponse.BodyHandlers.ofString()).body();
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+
 
             //Create JSONArray from commentsJSON
             JSONArray commentsArray = new JSONArray(commentsJSON);
