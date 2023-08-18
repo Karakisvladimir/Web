@@ -41,7 +41,10 @@ public class WorkInObject {
     public static void updateUser() {
         try {
             HttpClient httpClient = HttpClient.newHttpClient();
-            HttpRequest request = HttpRequest.newBuilder().uri(URI.create("https://jsonplaceholder.typicode.com/users")).header("Content-Type", "application/json").method("PUT", HttpRequest.BodyPublishers.ofString("{\"name\":\"John Doe\",\"username\":\"johndoe\",\"email\":\"johndoe@example.com\"}")).build();
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create("https://jsonplaceholder.typicode.com/users"))
+                    .header("Content-Type", "application/json")
+                    .method("PUT", HttpRequest.BodyPublishers.ofString("{\"name\":\"John Doe\",\"username\":\"johndoe\",\"email\":\"johndoe@example.com\"}")).build();
             HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
 
             System.out.println(response.statusCode());
@@ -66,14 +69,16 @@ public class WorkInObject {
         Document doc = Jsoup.connect(baseUrl).ignoreContentType(true).get();
         System.out.println("All users info: " + doc);
     }
-
     // метод для отримання інформації про користувача за id
-    public static void getUserById() throws IOException {
-        String baseUrl1 = "https://jsonplaceholder.typicode.com";
-        String baseUrl = "https://jsonplaceholder.typicode.com/users/9";
+    public static String getUserById(String id) throws IOException {
+        String baseUrl = "https://jsonplaceholder.typicode.com/users/" + id;
         Document doc1 = Jsoup.connect(baseUrl).ignoreContentType(true).get();
-        System.out.println("User info by ID: " + doc1);
+        System.out.println("doc1 = " + doc1);
+        return doc1.toString();
     }
+
+
+
 
     // метод для отримання інформації про користувача за username
     public static void getUserByUsername() throws IOException {

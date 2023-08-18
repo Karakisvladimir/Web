@@ -9,11 +9,12 @@ import static org.example.task1.WorkInObject.*;
 public class Main {
     public static void main(String[] args) {
         try {
+
             createUser();
             updateUser();
             deleteUser();
             getAllUsers();
-            getUserById();
+            getUserById("5");
             getUserByUsername();
             getCommentsForPost(10);
             printOpenTasksForUser(10);
